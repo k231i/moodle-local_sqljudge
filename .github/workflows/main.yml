@@ -22,5 +22,5 @@ jobs:
       - name: Deploy core
         run: rsync -avz --rsync-path='sudo rsync' ./ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/var/www/html/moodle/local/${{ github.event.repository.name }}/
       - name: Deploy client
-        run: rsync -avz --rsync-path='sudo rsync' ./client/ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/var/www/html/moodle/
+        run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "sudo rsync -a /var/www/html/moodle/local/${{ github.event.repository.name }}/clients/ /var/www/html/moodle/ && exit"
       
