@@ -20,7 +20,7 @@ jobs:
         run: ssh-keyscan -H ${{ secrets.SSH_HOST }} >> ~/.ssh/known_hosts
         
       - name: Deploy core
-        run: rsync -avz ./ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/var/www/html/moodle/local/${{ github.event.repository.name }}/
+        run: rsync -avz --rsync-path='sudo rsync' ./ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/var/www/html/moodle/local/${{ github.event.repository.name }}/
       - name: Deploy client
-        run: rsync -avz ./client/ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/var/www/html/moodle/
+        run: rsync -avz --rsync-path='sudo rsync' ./client/ ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/var/www/html/moodle/
       
