@@ -25,9 +25,20 @@ function get_max_times() {
     return $time;
 }
 
-function get_max_ram_usages() {
-    $maxsize = 1024 * 1024 * get_config('local_sqljudge', 'maxramlimit');
-    for ($i = 1024 * 1024; $i <= $maxsize; $i *= 2)
-        $ramusage[$i] = display_size($i);
-    return $ramusage;
+function get_databases() {
+    global $DB;
+    $databases = $DB->get_records('database_sqlj', null, '', 'id, name, dbms, createdon');
+    $result = array();
+    foreach ($databases as $id => $db_object) {
+        $result[id] = $db_object->dbms . ': ' . $db_object->name 
+            . ' (' . date('Y-m-d H:m:s', $db_object->createdon) . ')';
+    }
+    return $result;
 }
+
+// function get_max_ram_usages() {
+//     $maxsize = 1024 * 1024 * get_config('local_sqljudge', 'maxramlimit');
+//     for ($i = 1024 * 1024; $i <= $maxsize; $i *= 2)
+//         $ramusage[$i] = display_size($i);
+//     return $ramusage;
+// }

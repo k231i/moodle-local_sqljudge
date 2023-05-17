@@ -26,16 +26,16 @@ if ($hassiteconfig) {
         get_string('backendaddress_help', 'local_sqljudge'),
         '127.0.0.1:727',
         PARAM_TEXT));
-    $settings->add(new admin_setting_configtext('local_sqljudge/syncinterval', 
-        get_string('syncinterval', 'local_sqljudge'), 
-        get_string('syncinterval_help', 'local_sqljudge'), 
-        10, 
-        PARAM_INT));
-    $settings->add(new admin_setting_configtext('local_sqljudge/maxramlimit', 
-        get_string('maxramlimit', 'local_sqljudge'), 
-        get_string('maxramlimit_help', 'local_sqljudge'), 
-        64, 
-        PARAM_INT));
+    // $settings->add(new admin_setting_configtext('local_sqljudge/syncinterval', 
+    //     get_string('syncinterval', 'local_sqljudge'), 
+    //     get_string('syncinterval_help', 'local_sqljudge'), 
+    //     10, 
+    //     PARAM_INT));
+    // $settings->add(new admin_setting_configtext('local_sqljudge/maxramlimit', 
+    //     get_string('maxramlimit', 'local_sqljudge'), 
+    //     get_string('maxramlimit_help', 'local_sqljudge'), 
+    //     64, 
+    //     PARAM_INT));
     $settings->add(new admin_setting_configtext('local_sqljudge/maxtimelimit', 
         get_string('maxtimelimit', 'local_sqljudge'), 
         get_string('maxtimelimit_help', 'local_sqljudge'), 

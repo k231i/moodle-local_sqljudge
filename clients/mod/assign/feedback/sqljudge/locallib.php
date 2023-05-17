@@ -37,43 +37,68 @@ class assign_feedback_sqljudge extends assign_feedback_plugin {
         //     $sqljudge = $DB->get_record('assignment_sqlj', 
         //         array('assignment' => $this->assignment->get_instance()->id));
         // }
-        // script of database creation
-        $mform->addElement('filemanager', 'createdbscript', 
-            get_string('createdbscript', 'assignfeedback_sqljudge'), null,
-            array(
-                'subdirs' => 0,
-                'maxbytes' => 1024 * 1024 * 256,
-                'maxfiles' => 1,
-                'accepted_types' => array('.sql')
-        ));
-        $mform->hideIf('createdbscript', 'assignfeedback_sqljudge_enabled', 'notchecked');
+
+        // // script of database creation
+        // $mform->addElement('filemanager', 'createdbscript', 
+        //     get_string('createdbscript', 'assignfeedback_sqljudge'), null,
+        //     array(
+        //         'subdirs' => 0,
+        //         'maxbytes' => 1024 * 1024 * 256,
+        //         'maxfiles' => 1,
+        //         'accepted_types' => array('.sql')
+        // ));
+        // $mform->hideIf('createdbscript', 'assignfeedback_sqljudge_enabled', 'notchecked');
+
+        // test database
+        $mform->addElement('select',  'testdb',  
+            get_string('testdb', 'assignfeedback_sqljudge'),  
+            get_datebases());
+        $mform->hideIf('testdb', 'assignfeedback_sqljudge_enabled', 'notchecked');
+
         // script for checking answers
-        $mform->addElement('filemanager', 'checkscript', 
-            get_string('checkscript', 'assignfeedback_sqljudge'), null,
-            array(
-                'subdirs' => 0,
-                'maxbytes' => 1024 * 1024 * 4,
-                'maxfiles' => 1,
-                'accepted_types' => array('.sql')
-        ));
+        // $mform->addElement('filemanager', 'checkscript', 
+        //     get_string('checkscript', 'assignfeedback_sqljudge'), null,
+        //     array(
+        //         'subdirs' => 0,
+        //         'maxbytes' => 1024 * 1024 * 4,
+        //         'maxfiles' => 1,
+        //         'accepted_types' => array('.sql')
+        // ));
+        $mform->addElement('textarea', 'checkscript', 
+            get_string('checkscript', 'assignfeedback_sqljudge'), 'wrap="virtual" rows="20" cols="50"');
         $mform->hideIf('checkscript', 'assignfeedback_sqljudge_enabled', 'notchecked');
+
         // correct answer script
-        $mform->addElement('filemanager', 'correctanswer', 
-            get_string('correctanswer', 'assignfeedback_sqljudge'), null,
-            array(
-                'subdirs' => 0,
-                'maxbytes' => 1024 * 1024 * 4,
-                'maxfiles' => 1,
-                'accepted_types' => array('.sql')
-        ));
+        // $mform->addElement('filemanager', 'correctanswer', 
+        //     get_string('correctanswer', 'assignfeedback_sqljudge'), null,
+        //     array(
+        //         'subdirs' => 0,
+        //         'maxbytes' => 1024 * 1024 * 4,
+        //         'maxfiles' => 1,
+        //         'accepted_types' => array('.sql')
+        // ));
+        $mform->addElement('textarea', 'correctanswer', 
+            get_string('correctanswer', 'assignfeedback_sqljudge'), 'wrap="virtual" rows="20" cols="50"');
         $mform->hideIf('correctanswer', 'assignfeedback_sqljudge_enabled', 'notchecked');
-        // database management system
-        $choices = sqljudge_get_supported_dbms_list();
-        $mform->addElement('select', 'dbms', 
-            get_string('dbms', 'assignfeedback_sqljudge'), $choices);
-        $mform->setDefault('dbms',
-            !empty($sqljudge) ? $sqljudge->dbms : get_config('local_sqljudge', 'defaultdbms'));
-        $mform->hideIf('dbms', 'assignfeedback_sqljudge_enabled', 'notchecked');
+
+        // banned or required keywords/phrases
+        $mform->addElement('textarea', 'mustcontain', 
+            get_string('mustcontain', 'assignfeedback_sqljudge'), 'wrap="virtual" rows="20" cols="50"');
+        $mform->hideIf('mustcontain', 'assignfeedback_sqljudge_enabled', 'notchecked');
+
+        // hint
+        $mform->addElement('textarea', 'hint', 
+            get_string('hint', 'assignfeedback_sqljudge'), 'wrap="virtual" rows="20" cols="50"');
+        $mform->hideIf('hint', 'assignfeedback_sqljudge_enabled', 'notchecked');
+
+        // // database management system
+        // $choices = sqljudge_get_supported_dbms_list();
+        // $mform->addElement('select', 'dbms', 
+        //     get_string('dbms', 'assignfeedback_sqljudge'), $choices);
+        // $mform->setDefault('dbms',
+        //     !empty($sqljudge) ? $sqljudge->dbms : get_config('local_sqljudge', 'defaultdbms'));
+        // $mform->hideIf('dbms', 'assignfeedback_sqljudge_enabled', 'notchecked');
+
         // max time
         $choices = get_max_times();
         $mform->addElement('select', 'maxtime',
@@ -81,19 +106,18 @@ class assign_feedback_sqljudge extends assign_feedback_plugin {
         $mform->setDefault('maxtime',
             !empty($sqljudge) ? $sqljudge->maxtime : get_config('local_sqljudge', 'maxtimelimit'));
         $mform->hideIf('maxtime', 'assignfeedback_sqljudge_enabled', 'notchecked');
-        // max ram usage
-        $choices = get_max_ram_usages();
-        $mform->addElement('select', 'maxramusage',
-            get_string('maxramusage', 'assignfeedback_sqljudge'), $choices);
-        $mform->setDefault('maxramusage',
-            !empty($sqljudge) ? $sqljudge->maxramusage : get_config('local_sqljudge', 'maxramlimit'));
-        $mform->hideIf('maxramusage', 'assignfeedback_sqljudge_enabled', 'notchecked');
+
+        // // max ram usage
+        // $choices = get_max_ram_usages();
+        // $mform->addElement('select', 'maxramusage',
+        //     get_string('maxramusage', 'assignfeedback_sqljudge'), $choices);
+        // $mform->setDefault('maxramusage',
+        //     !empty($sqljudge) ? $sqljudge->maxramusage : get_config('local_sqljudge', 'maxramlimit'));
+        // $mform->hideIf('maxramusage', 'assignfeedback_sqljudge_enabled', 'notchecked');
     }
 
 
     public function save_settings(stdClass $data) {
-        return false; // TODO: add db table and remove this
-        
         global $DB;
 
         if (!empty($errors = $this->form_validation($data))) {
