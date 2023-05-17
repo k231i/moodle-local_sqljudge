@@ -22,7 +22,6 @@ $locallibfile = $CFG->dirroot . '/local/sqljudge/judgelib.php';
 file_exists($locallibfile) AND require_once $locallibfile;
 require_once($CFG->dirroot . '/mod/assign/feedbackplugin.php');
 require_once(dirname(__FILE__) . '/lib.php');
-//require_once('testcase_form.php');
 
 class assign_feedback_sqljudge extends assign_feedback_plugin {
     public function get_name() {

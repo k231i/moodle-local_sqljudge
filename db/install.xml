@@ -4,25 +4,19 @@
     xsi:noNamespaceSchemaLocation="../../../lib/xmldb/xmldb.xsd"
 >
   <TABLES>
-    <TABLE NAME="sqljudge_task" COMMENT="SQL Judge task details">
+    <TABLE NAME="database_sqlj" COMMENT="SQL Judge test database">
       <FIELDS>
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
-        <FIELD NAME="cmid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Source course_module id"/>
-        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Related user"/>
+        <FIELD NAME="name" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false"/>
+        <FIELD NAME="description" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
         <FIELD NAME="dbms" TYPE="char" LENGTH="255" NOTNULL="true" SEQUENCE="false" COMMENT="Database management system"/>
-        <FIELD NAME="ramlimit" TYPE="int" LENGTH="20" NOTNULL="false" SEQUENCE="false" COMMENT="RAM limit"/>
-        <FIELD NAME="timelimit" TYPE="int" LENGTH="20" NOTNULL="false" SEQUENCE="false" COMMENT="Time limit in seconds"/>
-        <FIELD NAME="createdbscript" TYPE="binary" NOTNULL="true" SEQUENCE="false" COMMENT="SQL script of database creation"/>
-        <FIELD NAME="checkscript" TYPE="binary" NOTNULL="true" SEQUENCE="false" COMMENT="SQL script to check whether the task is done correctly"/>
-        <FIELD NAME="correctanswer" TYPE="binary" NOTNULL="true" SEQUENCE="false" COMMENT="Correct answer to the task"/>
-        <FIELD NAME="correctoutput" TYPE="binary" NOTNULL="true" SEQUENCE="false" COMMENT="Correct output generated from correct answer + check script"/>
-        <FIELD NAME="mustcontain" TYPE="binary" NOTNULL="false" SEQUENCE="false" COMMENT="Keywords that the answer must (not) contain"/>
-        <FIELD NAME="hint" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="Hint to the students whose answer is incorrect"/>
+        <FIELD NAME="dbcreationscript" TYPE="text" NOTNULL="true" SEQUENCE="false" COMMENT="SQL script of database creation"/>
+        <FIELD NAME="createdon" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="Time of record creation"/>
+        <FIELD NAME="createdby" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="false" COMMENT="User who created the record"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
-        <KEY NAME="cmid" TYPE="foreign" FIELDS="cmid" REFTABLE="course_modules" REFFIELDS="id"/>
-        <KEY NAME="userid" TYPE="foreign" FIELDS="userid" REFTABLE="user" REFFIELDS="id"/>
+        <KEY NAME="createdby" TYPE="foreign" FIELDS="createdby" REFTABLE="user" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
   </TABLES>
