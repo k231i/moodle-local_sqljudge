@@ -1,5 +1,28 @@
 <?php
 require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
+require_once($CFG->libdir.'/formslib.php');
+
+class sqljudge_dbadd_form extends moodleform {
+    public function definition() {
+        $mform = $this->_form;
+
+        $mform->addElement('header', 'general', 'Add Database');
+
+        $mform->addElement('text', 'name', 'Name:');
+        $mform->setType('name', PARAM_TEXT);
+
+        $mform->addElement('text', 'description', 'Description:');
+        $mform->setType('description', PARAM_TEXT);
+
+        $mform->addElement('text', 'dbms', 'DBMS:');
+        $mform->setType('dbms', PARAM_TEXT);
+
+        $mform->addElement('textarea', 'dbcreationscript', 'DB Creation Script:');
+        $mform->setType('dbcreationscript', PARAM_TEXT);
+
+        $this->add_action_buttons(true, 'Submit');
+    }
+}
 
 //$context = get_system_context();
 $context = context_system::instance();
@@ -19,4 +42,34 @@ echo $output->header();
 echo $output->heading(get_string('about', 'local_sqljudge'), 1);
 echo $output->container(get_string('aboutcontent', 'local_sqljudge'), 'box copyright');
 
+// Process form submission
+$form = new sqljudge_dbadd_form();
+
+if ($form->is_cancelled()) {
+    // Handle form cancellation
+    echo $output->notification('Form submission canceled.', 'notifyproblem');
+} else if ($data = $form->get_data()) {
+    // Form submitted and data is valid
+    $name = $data->name;
+    $description = $data->description;
+    $dbms = $data->dbms;
+    $dbcreationscript = $data->dbcreationscript;
+
+    // Insert data into the database_sqlj table
+    $record = new stdClass();
+    $record->name = $name;
+    $record->description = $description;
+    $record->dbms = $dbms;
+    $record->dbcreationscript = $dbcreationscript;
+
+    $DB->insert_record('database_sqlj', $record);
+
+    echo $output->notification('Data inserted successfully.', 'notifysuccess');
+} else {
+    // Display the form
+    echo $output->heading('Insert Data', 2);
+    $form->display();
+}
+
 echo $output->footer();
+?>

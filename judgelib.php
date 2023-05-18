@@ -19,6 +19,7 @@ function sqljudge_get_supported_dbms_list() {
         CURLOPT_URL => get_config('local_sqljudge', 'backendaddress') . '/api/database/DbmsList'
     ));
     $resp = curl_exec($curl);
+    print_r($resp); //FIXME
     curl_close($curl);
     return $resp;
 
