@@ -43,16 +43,19 @@ if ($hassiteconfig) {
         PARAM_INT));
 
     $choices = sqljudge_get_supported_dbms_list();
-    $settings->add(new admin_setting_configmulticheckbox('local_sqljudge/availabledbms',
-        get_string('availabledbms', 'local_sqljudge'),
-        get_string('availabledbms_help', 'local_sqljudge'),
-        $choices,
-        $choices));
 
-    $settings->add(new admin_setting_configselect('local_sqljudge/defaultdbms', 
-        get_string('defaultdbms', 'local_sqljudge'), 
-        get_string('defaultdbms_help', 'local_sqljudge'), 
-        '', 
-        $choices));
+    if ($choices !== false) {
+        $settings->add(new admin_setting_configmulticheckbox('local_sqljudge/availabledbms',
+            get_string('availabledbms', 'local_sqljudge'),
+            get_string('availabledbms_help', 'local_sqljudge'),
+            $choices,
+            $choices));
+
+        $settings->add(new admin_setting_configselect('local_sqljudge/defaultdbms', 
+            get_string('defaultdbms', 'local_sqljudge'), 
+            get_string('defaultdbms_help', 'local_sqljudge'), 
+            '', 
+            $choices));
+    }
     $ADMIN->add('localplugins', $settings);
 }
