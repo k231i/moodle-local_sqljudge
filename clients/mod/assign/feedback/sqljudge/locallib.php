@@ -52,7 +52,7 @@ class assign_feedback_sqljudge extends assign_feedback_plugin {
         // test database
         $mform->addElement('select',  'testdb',  
             get_string('testdb', 'assignfeedback_sqljudge'),  
-            get_datebases());
+            get_databases());
         $mform->hideIf('testdb', 'assignfeedback_sqljudge_enabled', 'notchecked');
 
         // script for checking answers
