@@ -1,29 +1,31 @@
 <?php
 
-
-
-
-
-
-
-
-
-
-
-
-
 function sqljudge_get_supported_dbms_list() {
+    $backendAddress = get_config('local_sqljudge', 'backendaddress');
+
     $curl = curl_init();
     curl_setopt_array($curl, array(
         CURLOPT_RETURNTRANSFER => 1,
-        CURLOPT_URL => get_config('local_sqljudge', 'backendaddress') . '/api/database/DbmsList'
+        CURLOPT_URL => $backendAddress . '/api/database/dbmslist',
     ));
     $resp = curl_exec($curl);
-    print_r($resp); //FIXME
+
+    if ($resp === false) {
+        // Error occurred during the request
+        $error = curl_error($curl);
+        curl_close($curl);
+        echo "Error: " . $error;
+        return false;
+    }
+
     curl_close($curl);
-    return $resp;
 
+    $data = json_decode($resp, true);
 
-    // TODO: actually HTTP GET the list from backend
-    return ['PostgreSQL', 'MSSQL'];
+    if ($data === null) {
+        echo "Error: Failed to parse response.";
+        return false;
+    }
+
+    return $data;
 }
