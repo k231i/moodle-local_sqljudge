@@ -2,7 +2,7 @@
 
 function sqljudge_get_supported_dbms_list() {
     $backendAddress = get_config('local_sqljudge', 'backendaddress');
-    $backendPort = explode(':', $backendAddress).end();
+    $backendPort = end(explode(':', $backendAddress));
 
     $curl = curl_init();
     curl_setopt_array($curl, array(
