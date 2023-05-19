@@ -22,7 +22,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version = 2022070407;
+$plugin->version = 2022070408;
 $plugin->requires = 2020061500;     //Moodle 3.9
 $plugin->component = 'local_sqljudge';
 $plugin->maturity = MATURITY_ALPHA;

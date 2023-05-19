@@ -24,7 +24,7 @@ if ($hassiteconfig) {
     $settings->add(new admin_setting_configtext('local_sqljudge/backendaddress',
         get_string('backendaddress', 'local_sqljudge'),
         get_string('backendaddress_help', 'local_sqljudge'),
-        '127.0.0.1:727',
+        '127.0.0.1:5000',
         PARAM_TEXT));
     // $settings->add(new admin_setting_configtext('local_sqljudge/syncinterval', 
     //     get_string('syncinterval', 'local_sqljudge'), 
