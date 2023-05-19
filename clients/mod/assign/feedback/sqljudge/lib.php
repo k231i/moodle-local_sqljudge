@@ -16,7 +16,7 @@ function get_databases() {
     $databases = $DB->get_records('database_sqlj', null, '', 'id, name, dbms, createdon');
     $result = array();
     foreach ($databases as $id => $db_object) {
-        $result[id] = $db_object->dbms . ': ' . $db_object->name 
+        $result[$id] = $db_object->dbms . ': ' . $db_object->name 
             . ' (' . date('Y-m-d H:m:s', $db_object->createdon) . ')';
     }
     return $result;
