@@ -33,19 +33,10 @@ class sqljudge_dbadd_form extends moodleform {
         $mform->setType('dbms', PARAM_ALPHA);
 
         $mform->addElement(
-            'filepicker',
-            'dbcreationscript',
-            'DB Creation Script:',
-            null,
-            [
-                'maxbytes' => 1024 * 1024 * 100,
-                'accepted_types' => ['.sql'],
-            ]
-        );
-        $mform->addRule(
+            'textarea', 
             'dbcreationscript', 
-            'File is required', 
-            'required', null, 'client');
+            'DB Creation Script:');
+        $mform->setType('dbcreationscript', PARAM_TEXT);
 
         $this->add_action_buttons(true, 'Submit');
     }
@@ -80,7 +71,7 @@ if ($form->is_cancelled()) {
     $name = $data->name;
     $description = $data->description;
     $dbms = $data->dbms;
-    $dbcreationscript = $form->get_file_content('dbcreationscript');
+    $dbcreationscript = $data->dbcreationscript;
 
     // Insert data into the database_sqlj table
     $record = new stdClass();
