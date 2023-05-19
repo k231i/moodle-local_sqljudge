@@ -38,7 +38,7 @@ class sqljudge_dbadd_form extends moodleform {
             'DB Creation Script:',
             null,
             [
-                'maxbytes' => 1024 * 1024 * 200,
+                'maxbytes' => 1024 * 1024 * 100,
                 'accepted_types' => ['.sql'],
             ]
         );
