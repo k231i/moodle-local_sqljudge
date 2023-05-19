@@ -8,19 +8,44 @@ class sqljudge_dbadd_form extends moodleform {
     public function definition() {
         $mform = $this->_form;
 
-        $mform->addElement('header', 'general', 'Add Database');
+        $mform->addElement(
+            'header', 
+            'general', 
+            'Add Database');
 
-        $mform->addElement('text', 'name', 'Name:');
+        $mform->addElement(
+            'text', 
+            'name', 
+            'Name:');
         $mform->setType('name', PARAM_TEXT);
 
-        $mform->addElement('text', 'description', 'Description:');
+        $mform->addElement(
+            'text', 
+            'description', 
+            'Description:');
         $mform->setType('description', PARAM_TEXT);
 
-        $mform->addElement('select', 'dbms', 'DBMS:', sqljudge_get_supported_dbms_list());
+        $mform->addElement(
+            'select', 
+            'dbms', 
+            'DBMS:', 
+            sqljudge_get_supported_dbms_list());
         $mform->setType('dbms', PARAM_ALPHA);
 
-        $mform->addElement('textarea', 'dbcreationscript', 'DB Creation Script:');
-        $mform->setType('dbcreationscript', PARAM_TEXT);
+        $mform->addElement(
+            'filepicker',
+            'dbcreationscript',
+            'DB Creation Script:',
+            null,
+            [
+                'maxbytes' => 1024 * 1024 * 200,
+                'accepted_types' => ['.sql'],
+            ]
+        );
+        $mform->addRule(
+            'dbcreationscript', 
+            'File is required', 
+            'required', null, 'client');
 
         $this->add_action_buttons(true, 'Submit');
     }
@@ -55,7 +80,17 @@ if ($form->is_cancelled()) {
     $name = $data->name;
     $description = $data->description;
     $dbms = $data->dbms;
-    $dbcreationscript = $data->dbcreationscript;
+    $dbcreationscript;
+
+    $filemanager = get_file_manager();
+    $file = $filemanager->get_file('dbcreationscript');
+    $dbcreationscript = '';
+    if ($file) {
+        $filecontent = file_get_contents($file->get_content_filepath());
+        if ($filecontent !== false) {
+            $dbcreationscript = $filecontent;
+        }
+    }
 
     // Insert data into the database_sqlj table
     $record = new stdClass();
