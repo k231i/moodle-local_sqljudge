@@ -6,6 +6,8 @@ if ($hassiteconfig) {
 
     $settings = new admin_settingpage('sqljudge', get_string('pluginname', 'local_sqljudge'));
 
+    $ADMIN->add( 'localplugins', $settings );
+
     $settings->add(new admin_setting_configtext('local_sqljudge/backendaddress',
         get_string('backendaddress', 'local_sqljudge'),
         get_string('backendaddress_help', 'local_sqljudge'),
