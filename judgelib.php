@@ -1,12 +1,15 @@
 <?php
 
 function sqljudge_get_supported_dbms_list() {
-    $backendAddress = get_config('local_sqljudge', 'backendaddress');
+    $backendAddress = explode(':', get_config('local_sqljudge', 'backendaddress'));
+    $backendHost = $backendAddress[0];
+    $backendPort = $backendAddress[1];
 
     $curl = curl_init();
     curl_setopt_array($curl, array(
         CURLOPT_RETURNTRANSFER => 1,
-        CURLOPT_URL => $backendAddress . '/api/database/dbmslist',
+        CURLOPT_URL => $backendHost . '/api/database/dbmslist',
+        CURLOPT_PORT => $backendPort
     ));
     $resp = curl_exec($curl);
 
