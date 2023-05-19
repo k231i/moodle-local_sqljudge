@@ -19,7 +19,7 @@ function sqljudge_get_supported_dbms_list() {
     }
 
     curl_close($curl);
-
+    echo $resp;
     $data = json_decode($resp, true);
 
     if ($data === null) {
