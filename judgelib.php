@@ -29,5 +29,11 @@ function sqljudge_get_supported_dbms_list() {
         return false;
     }
 
-    return $data;
+    $result = array();
+
+    foreach ($data as $key => $value) {
+        $result[$value] = $value;
+    }
+
+    return $result;
 }

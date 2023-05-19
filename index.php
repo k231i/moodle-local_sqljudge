@@ -1,6 +1,8 @@
 <?php
 require_once(dirname(dirname(dirname(__FILE__))) . '/config.php');
 require_once($CFG->libdir.'/formslib.php');
+require_once($CFG->dirroot . '/local/sqljudge/judgelib.php');
+
 
 class sqljudge_dbadd_form extends moodleform {
     public function definition() {
@@ -14,8 +16,8 @@ class sqljudge_dbadd_form extends moodleform {
         $mform->addElement('text', 'description', 'Description:');
         $mform->setType('description', PARAM_TEXT);
 
-        $mform->addElement('text', 'dbms', 'DBMS:');
-        $mform->setType('dbms', PARAM_TEXT);
+        $mform->addElement('select', 'dbms', 'DBMS:', sqljudge_get_supported_dbms_list());
+        $mform->setType('dbms', PARAM_ALPHA);
 
         $mform->addElement('textarea', 'dbcreationscript', 'DB Creation Script:');
         $mform->setType('dbcreationscript', PARAM_TEXT);
@@ -61,6 +63,8 @@ if ($form->is_cancelled()) {
     $record->description = $description;
     $record->dbms = $dbms;
     $record->dbcreationscript = $dbcreationscript;
+    $record->createdon = time();
+    $record->createdby = $USER->id;
 
     $DB->insert_record('database_sqlj', $record);
 
