@@ -60,6 +60,24 @@ echo $output->header();
 echo $output->heading(get_string('about', 'local_sqljudge'), 1);
 echo $output->container(get_string('aboutcontent', 'local_sqljudge'), 'box copyright');
 
+// List of databases
+echo $output->heading('List of Databases', 2);
+
+// Fetch databases from the database_sqlj table
+$databases = $DB->get_records('database_sqlj');
+if (!empty($databases)) {
+    echo '<ul>';
+    foreach ($databases as $database) {
+        echo '<li>' . $database->name;
+        echo ' <button onclick="createDatabase(' . $database->id . ')">Create</button>';
+        echo ' <button onclick="forceCreateDatabase(' . $database->id . ')">Force Create</button>';
+        echo '</li>';
+    }
+    echo '</ul>';
+} else {
+    echo $output->notification('No databases found.', 'notifyproblem');
+}
+
 // Process form submission
 $form = new sqljudge_dbadd_form();
 
@@ -93,3 +111,16 @@ if ($form->is_cancelled()) {
 
 echo $output->footer();
 ?>
+
+<script>
+    // JavaScript functions
+    function createDatabase(databaseId) {
+        // TODO: Implement createDatabase logic using AJAX or other methods
+        alert('Create database with ID: ' + databaseId);
+    }
+
+    function forceCreateDatabase(databaseId) {
+        // TODO: Implement forceCreateDatabase logic using AJAX or other methods
+        alert('Force create database with ID: ' + databaseId);
+    }
+</script>
