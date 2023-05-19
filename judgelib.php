@@ -1,7 +1,7 @@
 <?php
 
 function sqljudge_get_supported_dbms_list() {
-    $backendAddress = get_config('local_sqljudge', 'backendaddress');
+    $backendAddress = '127.0.0.1:5000'; //FIXME get_config('local_sqljudge', 'backendaddress');
     $backendPort = explode(':', $backendAddress)[1];
     echo $backendAddress;
     echo $backendPort;
