@@ -80,17 +80,7 @@ if ($form->is_cancelled()) {
     $name = $data->name;
     $description = $data->description;
     $dbms = $data->dbms;
-    $dbcreationscript;
-
-    $filemanager = get_file_manager();
-    $file = $filemanager->get_file('dbcreationscript');
-    $dbcreationscript = '';
-    if ($file) {
-        $filecontent = file_get_contents($file->get_content_filepath());
-        if ($filecontent !== false) {
-            $dbcreationscript = $filecontent;
-        }
-    }
+    $dbcreationscript = $form->get_file_content('dbcreationscript');
 
     // Insert data into the database_sqlj table
     $record = new stdClass();
