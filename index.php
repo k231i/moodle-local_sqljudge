@@ -80,6 +80,7 @@ if ($dbcreatedata = $dbcreate_form->get_data()) {
     
         $curl = curl_init();
         curl_setopt_array($curl, array(
+            CURLOPT_CUSTOMREQUEST => 'POST',
             CURLOPT_RETURNTRANSFER => 1,
             CURLOPT_URL => $backendAddress . '/api/database/create/' . $dbcreatedata->databaseid,
             CURLOPT_PORT => $backendPort,
@@ -114,6 +115,7 @@ if ($dbcreatedata = $dbcreate_form->get_data()) {
     
         $curl = curl_init();
         curl_setopt_array($curl, array(
+            CURLOPT_CUSTOMREQUEST => 'POST',
             CURLOPT_RETURNTRANSFER => 1,
             CURLOPT_URL => $backendAddress . '/api/database/forcecreate/' . $dbcreatedata->databaseid,
             CURLOPT_PORT => $backendPort,
