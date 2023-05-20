@@ -46,11 +46,11 @@ class sqljudge_dbcreate_form extends moodleform {
             $mform->setDefault('databaseid', reset($databases)->id);
         }
 
-        $buttonGroup = '<div class="btn-group">'
-            . $mform->createElement('submit', 'create', 'Create')->toHtml()
-            . $mform->createElement('submit', 'forcecreate', 'Force Create')->toHtml()
-            . '</div>';
-        $mform->addElement('html', $buttonGroup);
+        $mform->addElement('html', '<div class="btn-wrapper">');
+        $mform->addElement('submit', 'create', 'Create');
+        $mform->addElement('html', '<span>&nbsp;&nbsp;&nbsp;</span>');
+        $mform->addElement('submit', 'forcecreate', 'Force Create');
+        $mform->addElement('html', '</div>');
     }
 }
 
