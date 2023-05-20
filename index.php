@@ -105,6 +105,7 @@ if ($dbcreatedata = $dbcreate_form->get_data()) {
         } else if ($respcode === 200) {
             echo $output->notification('Database already exists', 'notifyinfo');
         } else {
+            echo $resp;
             echo $output->notification('Error, try again later', 'notifyerror');
         }
     } else if (!empty($dbcreatedata->forcecreate)) {
