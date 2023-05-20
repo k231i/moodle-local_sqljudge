@@ -30,7 +30,7 @@ class sqljudge_dbadd_form extends moodleform {
 class sqljudge_dbcreate_form extends moodleform {
     public function definition() {
         global $DB;
-        
+
         $mform = $this->_form;
 
         $mform->addElement('header', 'general', 'Select Database');
@@ -46,10 +46,11 @@ class sqljudge_dbcreate_form extends moodleform {
             $mform->setDefault('databaseid', reset($databases)->id);
         }
 
-        $mform->addElement('submit', 'submit', 'Select');
-
-        $mform->addElement('submit', 'create', 'Create');
-        $mform->addElement('submit', 'forcecreate', 'Force Create');
+        $buttonGroup = $mform->addElement('html', '<div class="btn-group"></div>');
+        $buttonGroup->addGroupElements(array(
+            $mform->createElement('submit', 'create', 'Create'),
+            $mform->createElement('submit', 'forcecreate', 'Force Create')
+        ));
     }
 }
 
