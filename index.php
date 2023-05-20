@@ -29,6 +29,8 @@ class sqljudge_dbadd_form extends moodleform {
 
 class sqljudge_dbcreate_form extends moodleform {
     public function definition() {
+        global $DB;
+        
         $mform = $this->_form;
 
         $mform->addElement('header', 'general', 'Select Database');
