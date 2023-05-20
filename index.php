@@ -8,41 +8,49 @@ class sqljudge_dbadd_form extends moodleform {
     public function definition() {
         $mform = $this->_form;
 
-        $mform->addElement(
-            'header', 
-            'general', 
-            'Add Database');
+        $mform->addElement('header', 'general', 'Add Database');
 
-        $mform->addElement(
-            'text', 
-            'name', 
-            'Name:');
+        $mform->addElement('text', 'name', 'Name:');
         $mform->setType('name', PARAM_TEXT);
 
-        $mform->addElement(
-            'text', 
-            'description', 
-            'Description:');
+        $mform->addElement('text', 'description', 'Description:');
         $mform->setType('description', PARAM_TEXT);
 
-        $mform->addElement(
-            'select', 
-            'dbms', 
-            'DBMS:', 
+        $mform->addElement('select', 'dbms', 'DBMS:', 
             sqljudge_get_supported_dbms_list());
         $mform->setType('dbms', PARAM_ALPHA);
 
-        $mform->addElement(
-            'textarea', 
-            'dbcreationscript', 
-            'DB Creation Script:');
+        $mform->addElement('textarea', 'dbcreationscript', 'DB Creation Script:');
         $mform->setType('dbcreationscript', PARAM_TEXT);
 
         $this->add_action_buttons(true, 'Submit');
     }
 }
 
-//$context = get_system_context();
+class sqljudge_dbcreate_form extends moodleform {
+    public function definition() {
+        $mform = $this->_form;
+
+        $mform->addElement('header', 'general', 'Select Database');
+
+        $databases = $DB->get_records('database_sqlj');
+        if (!empty($databases)) {
+            $options = array();
+            foreach ($databases as $database) {
+                $options[$database->id] = $database->name;
+            }
+            $mform->addElement('select', 'databaseid', 'Select Database:', $options);
+            $mform->setType('databaseid', PARAM_INT);
+            $mform->setDefault('databaseid', reset($databases)->id);
+        }
+
+        $mform->addElement('submit', 'submit', 'Select');
+
+        $mform->addElement('submit', 'create', 'Create');
+        $mform->addElement('submit', 'forcecreate', 'Force Create');
+    }
+}
+
 $context = context_system::instance();
 
 $PAGE->set_context($context);
@@ -60,31 +68,23 @@ echo $output->header();
 echo $output->heading(get_string('about', 'local_sqljudge'), 1);
 echo $output->container(get_string('aboutcontent', 'local_sqljudge'), 'box copyright');
 
-// List of databases
-echo $output->heading('List of Databases', 2);
+// Process form submission
+$dbcreate_form = new sqljudge_dbcreate_form();
+$dbadd_form = new sqljudge_dbadd_form();
 
-// Fetch databases from the database_sqlj table
-$databases = $DB->get_records('database_sqlj');
-if (!empty($databases)) {
-    echo '<ul>';
-    foreach ($databases as $database) {
-        echo '<li>' . $database->name;
-        echo ' <button onclick="createDatabase(' . $database->id . ')">Create</button>';
-        echo ' <button onclick="forceCreateDatabase(' . $database->id . ')">Force Create</button>';
-        echo '</li>';
+if ($dbcreatedata = $dbcreate_form->get_data()) {
+    if (!empty($dbcreatedata->create)) {
+        echo $output->notification('Create button clicked.', 'notifysuccess');
+    } else if (!empty($dbcreatedata->forcecreate)) {
+        echo $output->notification('Force Create button clicked.', 'notifysuccess');
     }
-    echo '</ul>';
 } else {
-    echo $output->notification('No databases found.', 'notifyproblem');
+    $dbcreate_form->display();
 }
 
-// Process form submission
-$form = new sqljudge_dbadd_form();
-
-if ($form->is_cancelled()) {
-    // Handle form cancellation
+if ($dbadd_form->is_cancelled()) {
     echo $output->notification('Form submission canceled.', 'notifyproblem');
-} else if ($data = $form->get_data()) {
+} else if ($data = $dbadd_form->get_data()) {
     // Form submitted and data is valid
     $name = $data->name;
     $description = $data->description;
@@ -104,23 +104,8 @@ if ($form->is_cancelled()) {
 
     echo $output->notification('Data inserted successfully.', 'notifysuccess');
 } else {
-    // Display the form
-    echo $output->heading('Insert Data', 2);
-    $form->display();
+    $dbadd_form->display();
 }
 
 echo $output->footer();
 ?>
-
-<script>
-    // JavaScript functions
-    function createDatabase(databaseId) {
-        // TODO: Implement createDatabase logic using AJAX or other methods
-        alert('Create database with ID: ' + databaseId);
-    }
-
-    function forceCreateDatabase(databaseId) {
-        // TODO: Implement forceCreateDatabase logic using AJAX or other methods
-        alert('Force create database with ID: ' + databaseId);
-    }
-</script>
