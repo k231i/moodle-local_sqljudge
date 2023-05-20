@@ -39,19 +39,16 @@ class sqljudge_dbcreate_form extends moodleform {
         if (!empty($databases)) {
             $options = array();
             foreach ($databases as $database) {
-                $options[$database->id] = $database->name;
+                $options[$database->id] = $database->dbms . ': ' . $database->name 
+                    . ' (' . date('Y-m-d H:m:s', $database->createdon) . ')';
             }
             $mform->addElement('select', 'databaseid', 'Select Database:', $options);
             $mform->setType('databaseid', PARAM_INT);
             $mform->setDefault('databaseid', reset($databases)->id);
         }
 
-        $mform->addElement('html', '<div style="display: inline-block;">');
         $mform->addElement('submit', 'create', 'Create');
-        $mform->addElement('html', '</div>');
-        $mform->addElement('html', '<div style="display: inline-block; margin-left: 10px;">');
         $mform->addElement('submit', 'forcecreate', 'Force Create');
-        $mform->addElement('html', '</div>');        
     }
 }
 
@@ -78,9 +75,71 @@ $dbadd_form = new sqljudge_dbadd_form();
 
 if ($dbcreatedata = $dbcreate_form->get_data()) {
     if (!empty($dbcreatedata->create)) {
-        echo $output->notification('Create button clicked.', 'notifysuccess');
+        $backendAddress = '127.0.0.1:5000'; //FIXME get_config('local_sqljudge', 'backendaddress');
+        $backendPort = explode(':', $backendAddress)[1];
+    
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+            CURLOPT_RETURNTRANSFER => 1,
+            CURLOPT_URL => $backendAddress . '/api/database/create/' . $dbcreatedata->databaseid,
+            CURLOPT_PORT => $backendPort,
+            CURLOPT_HEADER => true,
+            CURLOPT_NOBODY => true
+        ));
+        $resp = curl_exec($curl);
+        
+        if ($resp === false) {
+            // Error occurred during the request
+            $error = curl_error($curl);
+            curl_close($curl);
+            echo "Error: " . $error;
+            return false;
+        }
+        
+        $respcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+
+        curl_close($curl);
+
+        if ($respcode === 201) {
+            echo $output->notification('Created', 'notifysuccess');
+        } else if ($respcode === 200) {
+            echo $output->notification('Database already exists', 'notifyinfo');
+        } else {
+            echo $output->notification('Error, try again later', 'notifyerror');
+        }
     } else if (!empty($dbcreatedata->forcecreate)) {
-        echo $output->notification('Force Create button clicked.', 'notifysuccess');
+        $backendAddress = '127.0.0.1:5000'; //FIXME get_config('local_sqljudge', 'backendaddress');
+        $backendPort = explode(':', $backendAddress)[1];
+    
+        $curl = curl_init();
+        curl_setopt_array($curl, array(
+            CURLOPT_RETURNTRANSFER => 1,
+            CURLOPT_URL => $backendAddress . '/api/database/forcecreate/' . $dbcreatedata->databaseid,
+            CURLOPT_PORT => $backendPort,
+            CURLOPT_HEADER => true,
+            CURLOPT_NOBODY => true
+        ));
+        $resp = curl_exec($curl);
+        
+        if ($resp === false) {
+            // Error occurred during the request
+            $error = curl_error($curl);
+            curl_close($curl);
+            echo "Error: " . $error;
+            return false;
+        }
+        
+        $respcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+
+        curl_close($curl);
+
+        if ($respcode === 201) {
+            echo $output->notification('Created', 'notifysuccess');
+        } else if ($respcode === 200) {
+            echo $output->notification('Database already exists', 'notifyinfo');
+        } else {
+            echo $output->notification('Error, try again later', 'notifyerror');
+        }
     }
 } else {
     $dbcreate_form->display();
