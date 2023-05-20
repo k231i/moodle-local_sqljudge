@@ -46,7 +46,7 @@ class sqljudge_dbcreate_form extends moodleform {
             $mform->setDefault('databaseid', reset($databases)->id);
         }
 
-        $buttonGroup = '<div class="button-group">'
+        $buttonGroup = '<div class="btn-group">'
             . $mform->createElement('submit', 'create', 'Create')->toHtml()
             . $mform->createElement('submit', 'forcecreate', 'Force Create')->toHtml()
             . '</div>';
