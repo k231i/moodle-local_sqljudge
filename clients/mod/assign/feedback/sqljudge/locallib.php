@@ -24,11 +24,11 @@ class assign_feedback_sqljudge extends assign_feedback_plugin {
         }
 
         // test database
-        $mform->addElement('select',  'database',  
+        $mform->addElement('select',  'testdb',  
             get_string('testdb', 'assignfeedback_sqljudge'),  
             get_databases());
-        $mform->setDefault('database', empty($sqljudge) ? 1 : $sqljudge->database);
-        $mform->hideIf('database', 'assignfeedback_sqljudge_enabled', 'notchecked');
+        $mform->setDefault('testdb', empty($sqljudge) ? 1 : $sqljudge->testdb);
+        $mform->hideIf('testdb', 'assignfeedback_sqljudge_enabled', 'notchecked');
 
         // script for checking answers
         $mform->addElement('textarea', 'checkscript', 
@@ -105,7 +105,7 @@ class assign_feedback_sqljudge extends assign_feedback_plugin {
         $table->size = array('30%', '');
 
         $testdb = $DB->get_record('database_sqlj', 
-            array('id' => $assignment_sqlj->database));
+            array('id' => $assignment_sqlj->testdb));
 
         $table->data[] = array(
             get_string('dbms', 'assignfeedback_sqljudge'),

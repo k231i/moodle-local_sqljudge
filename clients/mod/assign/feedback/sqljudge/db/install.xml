@@ -9,7 +9,7 @@
         <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
         <FIELD NAME="assignment" TYPE="int" LENGTH="10" NOTNULL="false" DEFAULT="0" SEQUENCE="false"/>
         <FIELD NAME="timelimit" TYPE="int" LENGTH="10" NOTNULL="false" SEQUENCE="false" COMMENT="Time limit in seconds"/>
-        <FIELD NAME="database" TYPE="int" LENGTH="10" NOTNULL="false" DEFAULT="0" SEQUENCE="false"/>
+        <FIELD NAME="testdb" TYPE="int" LENGTH="10" NOTNULL="false" DEFAULT="0" SEQUENCE="false"/>
         <FIELD NAME="checkscript" TYPE="text" NOTNULL="true" SEQUENCE="false" COMMENT="SQL script to check whether the task is done correctly"/>
         <FIELD NAME="correctanswer" TYPE="text" NOTNULL="true" SEQUENCE="false" COMMENT="Correct answer to the task"/>
         <FIELD NAME="correctoutput" TYPE="text" NOTNULL="false" SEQUENCE="false" COMMENT="Correct output generated from correct answer + check script"/>
@@ -19,7 +19,7 @@
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
         <KEY NAME="assignment" TYPE="foreign" FIELDS="assignment" REFTABLE="assign" REFFIELDS="id"/>
-        <KEY NAME="database" TYPE="foreign" FIELDS="database" REFTABLE="database_sqlj" REFFIELDS="id"/>
+        <KEY NAME="testdb" TYPE="foreign" FIELDS="testdb" REFTABLE="database_sqlj" REFFIELDS="id"/>
       </KEYS>
     </TABLE>
     <TABLE NAME="assignment_sqlj_submission" COMMENT="SQL Judge submission">
