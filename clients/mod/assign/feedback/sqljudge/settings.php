@@ -5,7 +5,7 @@
 //     define('ASSIGNMENT_SQLJUDGE_MAX_RAM', 1024 * 1024 * get_config('local_sqljudge', 'maxramlimit'));
 // }
 
-require_once($CFG->dirroot . '/mod/assign/feedback/sqljudge/lib.php');
+// require_once($CFG->dirroot . '/mod/assign/feedback/sqljudge/lib.php');
 
 
 // $settings->add(new admin_setting_heading('sqljudge_help', 
