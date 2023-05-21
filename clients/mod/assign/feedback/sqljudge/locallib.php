@@ -88,8 +88,7 @@ class assign_feedback_sqljudge extends assign_feedback_plugin {
         $table->size = array('30%', '');
 
         $testdb = $DB->get_record('database_sqlj', 
-            array('id' => $assignment_sqlj->database), 
-            'id, name, description, dbms');
+            array('id' => $assignment_sqlj->database));
 
         $table->data[] = array(
             get_string('dbms', 'assignfeedback_sqljudge'),
@@ -117,7 +116,7 @@ class assign_feedback_sqljudge extends assign_feedback_plugin {
 
         $submission = $this->assignment->get_user_submission($grade->userid, false);
         $sqlj_submission = $DB->get_record('assignment_sqlj_submission', 
-            array('submission' => $submission->id), 'id, status');
+            array('submission' => $submission->id));
 
         $statusstyle = $sqlj_submission->status == SQLJ_STATUS_ACCEPTED 
             ? 'notifysuccess' 
@@ -138,8 +137,7 @@ class assign_feedback_sqljudge extends assign_feedback_plugin {
 
         $submission = $this->assignment->get_user_submission($grade->userid, false);
         $sqlj_submission = $DB->get_record('assignment_sqlj_submission', 
-            array('submission' => $submission->id), 
-            'id, status, output, testedon');
+            array('submission' => $submission->id));
 
             // Status
             $itemname = get_string('status', 'assignfeedback_sqljudge') . ' ' . 
@@ -187,7 +185,7 @@ class assign_feedback_sqljudge extends assign_feedback_plugin {
 
         $submission = $this->assignment->get_user_submission($grade->userid, false);
         $sqlj_submission = $DB->get_record('assignment_sqlj_submission', 
-            array('submission' => $submission->id), 'id');
+            array('submission' => $submission->id));
         return is_null($sqlj_submission);
     }
     public function delete_instance() {
