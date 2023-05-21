@@ -55,12 +55,12 @@ class assign_feedback_sqljudge extends assign_feedback_plugin {
         global $DB;
 
         $exists = $DB->get_record('assignment_sqlj', 
-            array('assignment' => $this->assignment->get_instance()->id)) 
+            array('assignment' => intval($this->assignment->get_instance()->id))) 
                 ? true : false;
         if (!$exists) 
-            return add_instance($data, $this->assignment->get_instance()->id);
+            return add_instance($data, intval($this->assignment->get_instance()->id));
         else 
-            return update_instance($data, $this->assignment->get_instance()->id);
+            return update_instance($data, intval($this->assignment->get_instance()->id));
     }
     
     public function view_header() {
@@ -80,7 +80,7 @@ class assign_feedback_sqljudge extends assign_feedback_plugin {
         global $DB;
 
         $assignment_sqlj = $DB->get_record('assignment_sqlj', 
-            array('assignment' => $this->assignment->get_instance()->id),
+            array('assignment' => intval($this->assignment->get_instance()->id)),
             'id, timelimit, database');
 
         $table = new html_table();
@@ -195,7 +195,7 @@ class assign_feedback_sqljudge extends assign_feedback_plugin {
         global $CFG, $DB;
 
         $submissions = $DB->get_records('assign_submission', 
-            array('assignment' => $this->assignment->get_instance()->id));
+            array('assignment' => intval($this->assignment->get_instance()->id)));
 
         foreach ($submissions as $submission)
             if (!$DB->delete_records('assignment_sqlj_submission', 
@@ -203,7 +203,7 @@ class assign_feedback_sqljudge extends assign_feedback_plugin {
                     return false;
 
         if (!$DB->delete_records('assignment_sqlj', 
-            array('assignment' => $this->assignment->get_instance()->id)))
+            array('assignment' => intval($this->assignment->get_instance()->id))))
                 return false;
 
         return true;
