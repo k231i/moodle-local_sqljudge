@@ -17,10 +17,10 @@ class assign_feedback_sqljudge extends assign_feedback_plugin {
         global $CFG, $COURSE, $DB;
 
         // test database
-        $mform->addElement('select',  'testdb',  
+        $mform->addElement('select',  'database',  
             get_string('testdb', 'assignfeedback_sqljudge'),  
             get_databases());
-        $mform->hideIf('testdb', 'assignfeedback_sqljudge_enabled', 'notchecked');
+        $mform->hideIf('database', 'assignfeedback_sqljudge_enabled', 'notchecked');
 
         // script for checking answers
         $mform->addElement('textarea', 'checkscript', 
@@ -44,11 +44,11 @@ class assign_feedback_sqljudge extends assign_feedback_plugin {
 
         // max time
         $choices = get_max_times();
-        $mform->addElement('select', 'maxtime',
+        $mform->addElement('select', 'timelimit',
             get_string('maxtime', 'assignfeedback_sqljudge'), $choices);
-        $mform->setDefault('maxtime',
+        $mform->setDefault('timelimit',
             !empty($sqljudge) ? $sqljudge->maxtime : get_config('local_sqljudge', 'maxtimelimit'));
-        $mform->hideIf('maxtime', 'assignfeedback_sqljudge_enabled', 'notchecked');
+        $mform->hideIf('timelimit', 'assignfeedback_sqljudge_enabled', 'notchecked');
     }
 
     public function save_settings(stdClass $data) {
@@ -139,9 +139,9 @@ class assign_feedback_sqljudge extends assign_feedback_plugin {
         $sqlj_submission = $DB->get_record('assignment_sqlj_submission', 
             array('submission' => $submission->id));
 
-            // Status
-            $itemname = get_string('status', 'assignfeedback_sqljudge') . ' ' . 
-            $OUTPUT->help_icon('status', 'assignfeedback_sqljudge');
+        // Status
+        $itemname = get_string('status', 'assignfeedback_sqljudge') . ' ' . 
+        $OUTPUT->help_icon('status', 'assignfeedback_sqljudge');
         $item = get_string('notavailable');
         if (isset($sqlj_submission->status)) {
             $itemstyle = $sqlj_submission->status == SQLJ_STATUS_ACCEPTED 
