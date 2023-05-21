@@ -16,38 +16,55 @@ class assign_feedback_sqljudge extends assign_feedback_plugin {
     public function get_settings(MoodleQuickForm $mform) {
         global $CFG, $COURSE, $DB;
 
+        // get existing sqljudge settings
+        $update = optional_param('update', 0, PARAM_INT);
+        if (!empty($update)) {
+            $sqljudge = $DB->get_record('assignment_sqlj', 
+                array('assignment' => $this->assignment->get_instance()->id));
+        }
+
         // test database
         $mform->addElement('select',  'database',  
             get_string('testdb', 'assignfeedback_sqljudge'),  
             get_databases());
+        $mform->setDefault('database', empty($sqljudge) ? 1 : $sqljudge->database);
         $mform->hideIf('database', 'assignfeedback_sqljudge_enabled', 'notchecked');
 
         // script for checking answers
         $mform->addElement('textarea', 'checkscript', 
-            get_string('checkscript', 'assignfeedback_sqljudge'), 'wrap="virtual" rows="20" cols="50"');
+            get_string('checkscript', 'assignfeedback_sqljudge'), 
+            'wrap="virtual" rows="20" cols="50"');
+        $mform->setDefault('checkscript', empty($sqljudge) ? '' : $sqljudge->checkscript);
         $mform->hideIf('checkscript', 'assignfeedback_sqljudge_enabled', 'notchecked');
 
         // correct answer script
         $mform->addElement('textarea', 'correctanswer', 
-            get_string('correctanswer', 'assignfeedback_sqljudge'), 'wrap="virtual" rows="20" cols="50"');
+            get_string('correctanswer', 'assignfeedback_sqljudge'), 
+            'wrap="virtual" rows="20" cols="50"');
+        $mform->setDefault('correctanswer', empty($sqljudge) ? '' : $sqljudge->correctanswer);
         $mform->hideIf('correctanswer', 'assignfeedback_sqljudge_enabled', 'notchecked');
 
         // banned or required keywords/phrases
         $mform->addElement('textarea', 'mustcontain', 
-            get_string('mustcontain', 'assignfeedback_sqljudge'), 'wrap="virtual" rows="20" cols="50"');
+            get_string('mustcontain', 'assignfeedback_sqljudge'), 
+            'wrap="virtual" rows="20" cols="50"');
+        $mform->setDefault('mustcontain', empty($sqljudge) ? '' : $sqljudge->mustcontain);
         $mform->hideIf('mustcontain', 'assignfeedback_sqljudge_enabled', 'notchecked');
 
         // hint
         $mform->addElement('textarea', 'hint', 
-            get_string('hint', 'assignfeedback_sqljudge'), 'wrap="virtual" rows="20" cols="50"');
+            get_string('hint', 'assignfeedback_sqljudge'), 
+            'wrap="virtual" rows="20" cols="50"');
+        $mform->setDefault('hint', empty($sqljudge) ? '' : $sqljudge->hint);
         $mform->hideIf('hint', 'assignfeedback_sqljudge_enabled', 'notchecked');
 
         // max time
         $choices = get_max_times();
         $mform->addElement('select', 'timelimit',
             get_string('maxtime', 'assignfeedback_sqljudge'), $choices);
-        $mform->setDefault('timelimit',
-            !empty($sqljudge) ? $sqljudge->maxtime : get_config('local_sqljudge', 'maxtimelimit'));
+        $mform->setDefault('timelimit', empty($sqljudge) 
+            ? get_config('local_sqljudge', 'maxtimelimit') 
+            : $sqljudge->timelimit);
         $mform->hideIf('timelimit', 'assignfeedback_sqljudge_enabled', 'notchecked');
     }
 
