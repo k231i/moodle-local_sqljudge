@@ -1,5 +1,7 @@
 <?php
 
+require_once($CFG->libdir . '/moodlelib.php');
+
 global $OUTPUT;
 
 $submissionId = optional_param('id', -1, PARAM_INT);
