@@ -181,6 +181,15 @@ class assign_feedback_sqljudge extends assign_feedback_plugin {
         $item = empty($sqlj_submission->output)
             ? get_string('notavailable')
             : $sqlj_submission->output;
+        $table->data[] = array($itemname, $item);
+
+        // Hint
+        if ($sqlj_submission->status === SQLJ_STATUS_WRONG_ANSWER && 
+            !empty($this->assignment->hint)) {
+                $itemname = get_string('hint', 'assignfeedback_sqljudge');
+                $item = $this->assignment->hint;
+                $table->data[] = array($itemname, $item);
+        }
         
         // Tested on
         $itemname = get_string('testedon', 'assignfeedback_sqljudge');
