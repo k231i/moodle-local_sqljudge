@@ -2,7 +2,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version = 2022070405;
+$plugin->version = 2022070406;
 $plugin->requires = 2020061500;     //Moodle 3.9
 $plugin->component = 'assignfeedback_sqljudge';
 $plugin->maturity = MATURITY_ALPHA;
