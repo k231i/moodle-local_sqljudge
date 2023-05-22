@@ -1,6 +1,6 @@
 <?php
 
-require_once($CFG->dirroot . '/lib/moodlelib.php');
+require_once(dirname(__FILE__) . '/../../config.php');
 
 global $OUTPUT;
 
