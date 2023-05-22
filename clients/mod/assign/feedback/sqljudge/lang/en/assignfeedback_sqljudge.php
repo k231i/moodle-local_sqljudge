@@ -2,7 +2,7 @@
 
 $string['check'] = 'Check';
 $string['checked'] = 'Checked';
-$string['checkerrorcode'] = 'Checking submission request failed with HTTP code {$a}';
+$string['checkerrorcode'] = 'Request failed with HTTP code {$a}';
 $string['checkfailed'] = 'Checking submission failed';
 $string['checkscript'] = 'Check script';
 $string['correctanswer'] = 'Correct answer';
