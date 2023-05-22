@@ -2,9 +2,13 @@
 
 require_once(dirname(__FILE__) . '/../../config.php');
 
-global $OUTPUT;
+global $OUTPUT, $PAGE;
 
 $submissionId = optional_param('id', -1, PARAM_INT);
+
+$url = new moodle_url('/local/sqljudge/check.php');
+$url->param('id', $submissionId);
+$PAGE->set_url($url);
 
 $backendAddress = '127.0.0.1:5000'; //FIXME get_config('local_sqljudge', 'backendaddress');
 $backendPort = explode(':', $backendAddress)[1];
