@@ -132,8 +132,7 @@ class assign_feedback_sqljudge extends assign_feedback_plugin {
         $showviewlink = true;
 
         $submission = $this->assignment->get_user_submission($grade->userid, false);
-        $sqlj_submission = $DB->get_record('assignment_sqlj_submission', 
-            array('submission' => $submission->id));
+        $sqlj_submission = $this->get_or_add_sqlj_submission($submission->id);
 
         $statusstyle = $sqlj_submission->status == SQLJ_STATUS_ACCEPTED 
             ? 'notifysuccess' 
@@ -153,8 +152,7 @@ class assign_feedback_sqljudge extends assign_feedback_plugin {
         $table->size = array('30%', '80%');
 
         $submission = $this->assignment->get_user_submission($grade->userid, false);
-        $sqlj_submission = $DB->get_record('assignment_sqlj_submission', 
-            array('submission' => $submission->id));
+        $sqlj_submission = $this->get_or_add_sqlj_submission($submission->id);
 
         // Status
         $itemname = get_string('status', 'assignfeedback_sqljudge') . ' ' . 
@@ -195,6 +193,22 @@ class assign_feedback_sqljudge extends assign_feedback_plugin {
 
         $output = html_writer::table($table);
         return $output;
+    }
+
+    function get_or_add_sqlj_submission($submissionId) {
+        global $DB;
+
+        $sqlj_submission = $DB->get_record('assignment_sqlj_submission', 
+            array('submission' => $submissionId));
+
+        if (empty($sqlj_submission)) {
+            $sqlj_submission = new stdClass();
+            $sqlj_submission->submission = $submissionId;
+            $sqlj_submission->status = SQLJ_STATUS_PENDING;
+            $sqlj_submission->id = $DB->insert_record('assignment_sqlj_submission', $sqlj_submission);
+        }
+
+        return $sqlj_submission;
     }
 
     public function is_empty(stdClass $grade) {
