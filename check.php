@@ -26,7 +26,7 @@ $curl = curl_init();
 curl_setopt_array($curl, array(
     CURLOPT_CUSTOMREQUEST => 'POST',
     CURLOPT_RETURNTRANSFER => 1,
-    CURLOPT_URL => $backendAddress . '/api/submission/check/' . $submissionId,
+    CURLOPT_URL => $backendAddress . '/api/submission/check?submissionIds=' . $submissionId,
     CURLOPT_PORT => $backendPort,
     CURLOPT_HEADER => true
 ));
