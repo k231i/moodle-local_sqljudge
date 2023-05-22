@@ -37,6 +37,7 @@ if ($resp === false) {
     $error = curl_error($curl);
     curl_close($curl);
     echo "Error: " . $error;
+    exit();
 }
 
 $respcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
@@ -46,11 +47,15 @@ curl_close($curl);
 echo $OUTPUT->header();
 
 if ($respcode === 200) {
-    echo $OUTPUT->notification('Checked', 'notifyinfo');
+    echo $OUTPUT->notification(get_string('checked', 'assignfeedback_sqljudge'), 'notifysuccess');
 } else if ($respcode === 422) {
-    echo $OUTPUT->notification('Checking submission failed', 'notifyerror');
+    echo $OUTPUT->notification(get_string('checkfailed', 'assignfeedback_sqljudge'), 'notifyerror');
 } else {
-    echo $OUTPUT->notification('Error sending request, try again later', 'notifyerror');
+    echo $OUTPUT->notification(
+        get_string('checkerrorcode', 'assignfeedback_sqljudge', $respcode), 
+        'notifyerror');
 }
+
+echo '<a href="javascript:history.back()">' . get_string('backtopageyouwereon') . '</a>';
 
 echo $OUTPUT->footer();

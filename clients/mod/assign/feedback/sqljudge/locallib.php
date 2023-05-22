@@ -186,9 +186,7 @@ class assign_feedback_sqljudge extends assign_feedback_plugin {
         $itemname = get_string('testedon', 'assignfeedback_sqljudge');
         $item = empty($sqlj_submission->testedon)
             ? get_string('notavailable')
-            : userdate($sqlj_submission->testedon) . '&nbsp(' . 
-                get_string('submittedearly', 'assign', 
-                    format_time(time() - $sqlj_submission->testedon)) . ')';
+            : userdate($sqlj_submission->testedon);
         $table->data[] = array($itemname, $item);
 
         $output = html_writer::table($table);
