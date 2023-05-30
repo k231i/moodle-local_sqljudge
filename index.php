@@ -47,8 +47,12 @@ class sqljudge_dbcreate_form extends moodleform {
             $mform->setDefault('databaseid', reset($databases)->id);
         }
 
-        $mform->addElement('submit', 'create', 'Create');
-        $mform->addElement('submit', 'forcecreate', 'Force Create');
+        $buttons = array();
+
+        $buttons[] = &$mform->createElement('submit', 'create', 'Create');
+        $buttons[] = &$mform->createElement('submit', 'forcecreate', 'Force Create');
+        
+        $mform->addGroup($buttons, 'submitButtons', '', array(' '), false);
     }
 }
 
