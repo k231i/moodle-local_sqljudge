@@ -53,8 +53,8 @@ class sqljudge_dbcreate_form extends moodleform {
         $mform->addGroup($createButtons, 'submitButtons', '', array(' '), false);
 
         $dropButtons = array();
-        $dropButtons[] = &$mform->createElement('submit', 'drop', 'Drop', array('class' => 'btn btn-danger'));
-        $dropButtons[] = &$mform->createElement('submit', 'dropdelete', 'Drop & Delete', array('class' => 'btn btn-danger'));
+        $dropButtons[] = &$mform->createElement('submit', 'drop', 'Drop');
+        $dropButtons[] = &$mform->createElement('submit', 'dropdelete', 'Drop & Delete');
         $mform->addGroup($dropButtons, 'submitButtons', '', array(' '), false);
     }
 }
