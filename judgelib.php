@@ -24,7 +24,7 @@ function sqljudge_get_supported_dbms_list() {
         // Error occurred during the request
         $error = curl_error($curl);
         curl_close($curl);
-        echo "Error: " . $error;
+        echo get_string('error', 'local_sqljudge') . $error;
         return false;
     }
 
@@ -33,7 +33,7 @@ function sqljudge_get_supported_dbms_list() {
     $data = json_decode($resp, true);
 
     if ($data === null) {
-        echo "Error: Failed to parse response.";
+        echo get_string('error', 'local_sqljudge') . get_string('parserespfail', 'local_sqljudge');
         return false;
     }
 

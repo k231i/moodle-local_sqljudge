@@ -8,22 +8,27 @@ class sqljudge_dbadd_form extends moodleform {
     public function definition() {
         $mform = $this->_form;
 
-        $mform->addElement('header', 'general', 'Add Database');
+        $mform->addElement('header', 'general', 
+            get_string('dbadd', 'local_sqljudge'));
 
-        $mform->addElement('text', 'name', 'Name:');
+        $mform->addElement('text', 'name', 
+            get_string('dbadd_name', 'local_sqljudge'));
         $mform->setType('name', PARAM_TEXT);
 
-        $mform->addElement('text', 'description', 'Description:');
+        $mform->addElement('text', 'description', 
+            get_string('dbadd_description', 'local_sqljudge'));
         $mform->setType('description', PARAM_TEXT);
 
-        $mform->addElement('select', 'dbms', 'DBMS:', 
+        $mform->addElement('select', 'dbms', 
+            get_string('dbadd_dbms', 'local_sqljudge'),
             sqljudge_get_supported_dbms_list());
         $mform->setType('dbms', PARAM_ALPHA);
 
-        $mform->addElement('textarea', 'dbcreationscript', 'DB Creation Script:');
+        $mform->addElement('textarea', 'dbcreationscript', 
+            get_string('dbadd_dbcreationscript', 'local_sqljudge'));
         $mform->setType('dbcreationscript', PARAM_TEXT);
 
-        $this->add_action_buttons(true, 'Submit');
+        $this->add_action_buttons(true, get_string('dbadd_submit', 'local_sqljudge'));
     }
 }
 
@@ -33,7 +38,8 @@ class sqljudge_dbcreate_form extends moodleform {
 
         $mform = $this->_form;
 
-        $mform->addElement('header', 'general', 'Select Database');
+        $mform->addElement('header', 'general', 
+            get_string('dbman', 'local_sqljudge'));
 
         $databases = $DB->get_records('database_sqlj');
         if (!empty($databases)) {
@@ -42,19 +48,25 @@ class sqljudge_dbcreate_form extends moodleform {
                 $options[$database->id] = $database->dbms . ': ' . $database->name 
                     . ' (' . date('Y-m-d H:m:s', $database->createdon) . ')';
             }
-            $mform->addElement('select', 'databaseid', 'Select Database:', $options);
+            $mform->addElement('select', 'databaseid', 
+                get_string('dbman_dbselect', 'local_sqljudge'), 
+                $options);
             $mform->setType('databaseid', PARAM_INT);
             $mform->setDefault('databaseid', reset($databases)->id);
         }
 
         $createButtons = array();
-        $createButtons[] = &$mform->createElement('submit', 'create', 'Create');
-        $createButtons[] = &$mform->createElement('submit', 'forcecreate', 'Force Create');
+        $createButtons[] = &$mform->createElement('submit', 'create', 
+            get_string('dbman_deploy', 'local_sqljudge'));
+        $createButtons[] = &$mform->createElement('submit', 'forcecreate', 
+            get_string('dbman_deployforce', 'local_sqljudge'));
         $mform->addGroup($createButtons, 'submitButtons', '', array(' '), false);
 
         $dropButtons = array();
-        $dropButtons[] = &$mform->createElement('submit', 'drop', 'Drop');
-        $dropButtons[] = &$mform->createElement('submit', 'dropdelete', 'Drop & Delete');
+        $dropButtons[] = &$mform->createElement('submit', 'drop', 
+            get_string('dbman_drop', 'local_sqljudge'));
+        $dropButtons[] = &$mform->createElement('submit', 'dropdelete', 
+            get_string('dbman_dropdelete', 'local_sqljudge'));
         $mform->addGroup($dropButtons, 'submitButtons', '', array(' '), false);
     }
 }
@@ -121,7 +133,7 @@ if ($dbcreatedata = $dbcreate_form->get_data()) {
         // Error occurred during the request
         $error = curl_error($curl);
         curl_close($curl);
-        echo "Error: " . $error;
+        echo get_string('error', 'local_sqljudge') . $error;
         return false;
     }
     
@@ -130,21 +142,26 @@ if ($dbcreatedata = $dbcreate_form->get_data()) {
     curl_close($curl);
 
     if ($respcode === 201) {
-        echo $output->notification('Success', 'notifysuccess');
+        echo $output->notification(
+            get_string('dbman_success', 'local_sqljudge'), 'notifysuccess');
     } else if ($respcode === 200) {
         if (!empty($dbcreatedata->drop) || !empty($dbcreatedata->dropdelete)) {
-            echo $output->notification('Dropped', 'notifysuccess');
+            echo $output->notification(
+                get_string('dbman_dropped', 'local_sqljudge'), 'notifysuccess');
 
             if (!empty($dbcreatedata->dropdelete)) {
                 $DB->delete_records('database_sqlj', array('id' => $dbcreatedata->databaseid));
-                echo $output->notification('Deleted', 'notifysuccess');
+                echo $output->notification(
+                    get_string('dbman_deleted', 'local_sqljudge'), 'notifysuccess');
             }
         } else {
-            echo $output->notification('Database already exists', 'notifyinfo');
+            echo $output->notification(
+                get_string('dbman_dbexists', 'local_sqljudge'), 'notifyinfo');
         }
     } else {
         echo $resp;
-        echo $output->notification('Error, try again later', 'notifyerror');
+        echo $output->notification(
+            get_string('dbman_error', 'local_sqljudge'), 'notifyerror');
     }
 } else if (has_capability('local/sqljudge:viewsensitive', context_system::instance())) {
     $dbcreate_form->display();

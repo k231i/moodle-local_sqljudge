@@ -74,7 +74,7 @@ function generate_correct_output($assignId) {
         // Error occurred during the request
         $error = curl_error($curl);
         curl_close($curl);
-        echo "Error: " . $error;
+        echo get_string('error', 'local_sqljudge') . $error;
         exit();
     }
     
