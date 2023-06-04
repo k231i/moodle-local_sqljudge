@@ -93,7 +93,7 @@ $dbcreate_form = new sqljudge_dbcreate_form();
 $dbadd_form = new sqljudge_dbadd_form();
 
 if ($dbcreatedata = $dbcreate_form->get_data()) {
-    $backendAddress = '127.0.0.1:5000'; //FIXME get_config('local_sqljudge', 'backendaddress');
+    $backendAddress = get_config('local_sqljudge', 'backendaddress');
     $backendPort = explode(':', $backendAddress)[1];
 
     $curl = curl_init();
