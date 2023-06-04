@@ -57,7 +57,7 @@ function update_instance($sqljAssign, $assignId) {
 }
 
 function generate_correct_output($assignId) {
-    $backendAddress = '127.0.0.1:5000'; //FIXME get_config('local_sqljudge', 'backendaddress');
+    $backendAddress = get_config('local_sqljudge', 'backendaddress');
     $backendPort = explode(':', $backendAddress)[1];
 
     $curl = curl_init();

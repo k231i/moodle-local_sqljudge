@@ -9,7 +9,7 @@ define("SQLJ_STATUS_TIME_LIMIT_EXCEEDED", 5);
 define("SQLJ_STATUS_UNKNOWN_ERROR", 6);
 
 function sqljudge_get_supported_dbms_list() {
-    $backendAddress = '127.0.0.1:5000'; //FIXME get_config('local_sqljudge', 'backendaddress');
+    $backendAddress = get_config('local_sqljudge', 'backendaddress');
     $backendPort = explode(':', $backendAddress)[1];
 
     $curl = curl_init();
