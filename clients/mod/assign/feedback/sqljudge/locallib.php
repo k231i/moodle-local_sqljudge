@@ -84,7 +84,7 @@ class assign_feedback_sqljudge extends assign_feedback_plugin {
         global $USER;
         $submission = $this->assignment->get_user_submission($USER->id, false);
         $output = $this->view_judge_info() . 
-            '<div class="p-y-2">';
+            '<div class="py-2">';
         if (!empty($submission)) {
             $url = new moodle_url('/local/sqljudge/check.php', array('id' => $submission->id));
             $output .= "<a href='$url' class='btn btn-info' type='button'>" . 
