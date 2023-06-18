@@ -33,28 +33,28 @@ class assign_feedback_sqljudge extends assign_feedback_plugin {
         // script for checking answers
         $mform->addElement('textarea', 'checkscript', 
             get_string('checkscript', 'assignfeedback_sqljudge'), 
-            'wrap="virtual" rows="20" cols="50"');
+            'wrap="virtual" rows="8" cols="50"');
         $mform->setDefault('checkscript', empty($sqljudge) ? '' : $sqljudge->checkscript);
         $mform->hideIf('checkscript', 'assignfeedback_sqljudge_enabled', 'notchecked');
 
         // correct answer script
         $mform->addElement('textarea', 'correctanswer', 
             get_string('correctanswer', 'assignfeedback_sqljudge'), 
-            'wrap="virtual" rows="20" cols="50"');
+            'wrap="virtual" rows="8" cols="50"');
         $mform->setDefault('correctanswer', empty($sqljudge) ? '' : $sqljudge->correctanswer);
         $mform->hideIf('correctanswer', 'assignfeedback_sqljudge_enabled', 'notchecked');
 
         // banned or required keywords/phrases
         $mform->addElement('textarea', 'mustcontain', 
             get_string('mustcontain', 'assignfeedback_sqljudge'), 
-            'wrap="virtual" rows="20" cols="50"');
+            'wrap="virtual" rows="8" cols="50"');
         $mform->setDefault('mustcontain', empty($sqljudge) ? '' : $sqljudge->mustcontain);
         $mform->hideIf('mustcontain', 'assignfeedback_sqljudge_enabled', 'notchecked');
 
         // hint
         $mform->addElement('textarea', 'hint', 
             get_string('hint', 'assignfeedback_sqljudge'), 
-            'wrap="virtual" rows="20" cols="50"');
+            'wrap="virtual" rows="8" cols="50"');
         $mform->setDefault('hint', empty($sqljudge) ? '' : $sqljudge->hint);
         $mform->hideIf('hint', 'assignfeedback_sqljudge_enabled', 'notchecked');
 
@@ -153,6 +153,8 @@ class assign_feedback_sqljudge extends assign_feedback_plugin {
 
         $submission = $this->assignment->get_user_submission($grade->userid, false);
         $sqlj_submission = $this->get_or_add_sqlj_submission($submission->id);
+        $sqlj_assignment = $DB->get_record('assignment_sqlj', 
+            array('assignment' => $this->assignment->get_instance()->id));
 
         // Status
         $itemname = get_string('status', 'assignfeedback_sqljudge') . ' ' . 
@@ -185,9 +187,9 @@ class assign_feedback_sqljudge extends assign_feedback_plugin {
 
         // Hint
         if ($sqlj_submission->status === SQLJ_STATUS_WRONG_ANSWER && 
-            !empty($this->assignment->hint)) {
+            !empty($sqlj_assignment->hint)) {
                 $itemname = get_string('hint', 'assignfeedback_sqljudge');
-                $item = $this->assignment->hint;
+                $item = $sqlj_assignment->hint;
                 $table->data[] = array($itemname, $item);
         }
         
