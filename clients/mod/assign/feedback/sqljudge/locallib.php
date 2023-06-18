@@ -154,7 +154,7 @@ class assign_feedback_sqljudge extends assign_feedback_plugin {
         $submission = $this->assignment->get_user_submission($grade->userid, false);
         $sqlj_submission = $this->get_or_add_sqlj_submission($submission->id);
         $sqlj_assignment = $DB->get_record('assignment_sqlj', 
-            array('assignment' => $this->assignment->get_instance()->id));
+            array('assignment' => $submission->assignment));
 
         // Status
         $itemname = get_string('status', 'assignfeedback_sqljudge') . ' ' . 
