@@ -83,7 +83,6 @@ class assign_feedback_sqljudge extends assign_feedback_plugin {
     public function view_header() {
         global $USER;
         $submission = $this->assignment->get_user_submission($USER->id, false);
-        $this->get_or_add_sqlj_submission($submission->id);
         $output = $this->view_judge_info() . 
             '<div class="py-2">';
         if (!empty($submission)) {
