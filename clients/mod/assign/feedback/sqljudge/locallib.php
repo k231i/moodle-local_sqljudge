@@ -219,8 +219,8 @@ class assign_feedback_sqljudge extends assign_feedback_plugin {
             $sqlj_submission->submission = $submissionId;
             $sqlj_submission->status = SQLJ_STATUS_PENDING;
             $newid = $DB->insert_record('assignment_sqlj_submission', $sqlj_submission, true);
-            echo json_encode($sqlj_submission);
             $sqlj_submission->id = $newid;
+            echo json_encode($sqlj_submission);
         }
 
         return $sqlj_submission;
