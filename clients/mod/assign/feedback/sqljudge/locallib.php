@@ -226,8 +226,12 @@ class assign_feedback_sqljudge extends assign_feedback_plugin {
         global $DB;
 
         $submission = $this->assignment->get_user_submission($grade->userid, false);
-        $sqlj_submission = $DB->get_record('assignment_sqlj_submission', 
-            array('submission' => $submission->id));
+
+        if (empty($submission)) 
+            return true;
+
+        $sqlj_submission = $this->get_or_add_sqlj_submission($submission->id);
+        
         return is_null($sqlj_submission);
     }
     public function delete_instance() {
